@@ -7,6 +7,8 @@ jobs:
   build-windows:
     name: Build
     runs-on: windows-latest
+    env:
+      install_path: "${{ github.workspace }}/install"
 
     steps:
       - name: Checkout repository
@@ -19,7 +21,7 @@ jobs:
 
       - name: Install build tools
         run: |
-          choco install ninja pkgconfiglite
+          choco install ninja pkgconfiglite meson
 
       - name: Setup a new (or from cache) vcpkg (and does not build any package)
         uses: lukka/run-vcpkg@v11 # Always specify the specific _version_ of the
@@ -43,3 +45,10 @@ jobs:
           ${{ env.RUNVCPKG_VCPKG_ROOT }}/vcpkg.exe install `
             --clean-after-build `
             $packages
+
+      - name: Build
+        run: |
+          $env:PKG_CONFIG_PATH=${{ env.RUNVCPKG_VCPKG_ROOT }}/installed/x64-windows-release/lib/pkgconfig
+          meson setup build --prefix=${{ env.install_path }} -buildtype release --strip
+          meson compile -C build
+          meson install -C build
