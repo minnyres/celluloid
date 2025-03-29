@@ -44,11 +44,12 @@ jobs:
             --no-dry-run
           ${{ env.RUNVCPKG_VCPKG_ROOT }}/vcpkg.exe install `
             --clean-after-build `
+            --host-triplet=x64-windows-release `
             $packages
 
       - name: Build
         run: |
-          $env:PKG_CONFIG_PATH=${{ env.RUNVCPKG_VCPKG_ROOT }}/installed/x64-windows-release/lib/pkgconfig
+          $env:PKG_CONFIG_PATH="${{ env.RUNVCPKG_VCPKG_ROOT }}/installed/x64-windows-release/lib/pkgconfig"
           meson setup build --prefix=${{ env.install_path }} -buildtype release --strip
           meson compile -C build
           meson install -C build
