@@ -19,7 +19,7 @@ jobs:
 
       - name: Install build tools
         run: |
-          choco install ninja
+          choco install ninja pkgconfiglite
 
       - name: Setup a new (or from cache) vcpkg (and does not build any package)
         uses: lukka/run-vcpkg@v11 # Always specify the specific _version_ of the
@@ -27,6 +27,7 @@ jobs:
                                   # to date with fixes on the v11 branch
         with:
           vcpkgGitCommitId: 'b02e341c927f16d991edbd915d8ea43eac52096c'
+          vcpkgDirectory: C:/vcpkg
 
       - name: Install dependencies from vcpkg
         run: |
