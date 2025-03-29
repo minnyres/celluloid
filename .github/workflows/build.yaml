@@ -1,0 +1,44 @@
+name: Build for Windows
+
+on:
+  push:
+
+jobs:
+  build-windows:
+    name: Build
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup devcmd
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+
+      - name: Install build tools
+        run: |
+          choco install ninja
+
+      - name: Setup a new (or from cache) vcpkg (and does not build any package)
+        uses: lukka/run-vcpkg@v11 # Always specify the specific _version_ of the
+                                  # action you need, `v11` in this case to stay up
+                                  # to date with fixes on the v11 branch
+        with:
+          vcpkgGitCommitId: 'b02e341c927f16d991edbd915d8ea43eac52096c'
+
+      - name: Install dependencies from vcpkg
+        run: |
+          # clear buildtrees after each package installation to reduce disk space requirements
+          $packages = `
+            "glib:x64-windows-release",
+            "gtk:x64-windows-release",
+            "libadwaita:x64-windows-release",
+            "libepoxy:x64-windows-release",
+            "lua:x64-windows-release"
+          ${{ env.RUNVCPKG_VCPKG_ROOT }}/vcpkg.exe upgrade `
+            --no-dry-run
+          ${{ env.RUNVCPKG_VCPKG_ROOT }}/vcpkg.exe install `
+            --clean-after-build `
+            $packages
