@@ -8,8 +8,8 @@ jobs:
     name: Build
     runs-on: windows-latest
     env:
-      install_path: "${{ github.workspace }}/install"
-      mpv_path: ${{ github.workspace }}/mpv
+      install_path: "${{ github.workspace }}\install"
+      mpv_path: "${{ github.workspace }}\mpv"
 
     steps:
       - name: Checkout repository
@@ -73,6 +73,6 @@ jobs:
       - name: Build
         run: |
           $env:PKG_CONFIG_PATH="${{ env.RUNVCPKG_VCPKG_ROOT }}/installed/x64-windows-release/lib/pkgconfig"    
-          meson setup build --prefix=${{ env.install_path }} --buildtype release --strip -Dc_std="gnu11,c11" -Dc_args="-I ${{ env.mpv_path }}/include"  -Dc_link_args="${{ env.mpv_path }}/mpv.lib"
+          meson setup build --prefix=${{ env.install_path }} --buildtype release --strip -Dc_std="gnu11,c11" -Dc_args="/I ${{ env.mpv_path }}\include"  -Dc_link_args="${{ env.mpv_path }}\mpv.lib"
           meson compile -C build
           meson install -C build
