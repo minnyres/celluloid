@@ -54,16 +54,21 @@ jobs:
             --host-triplet=x64-windows-release `
             $packages
 
+      - uses: msys2/setup-msys2@v2
+        id: msys2
+        with:
+          msystem: UCRT64
+          update: true
+          install: mingw-w64-ucrt-x86_64-tools-git
+
       - name: Install libmpv
         run: |
           mkdir -p mpv
           cd mpv
           aria2c https://github.com/shinchiro/mpv-winbuild-cmake/releases/download/20250330/mpv-dev-x86_64-20250330-git-5ba7ee5.7z
           7z x mpv-dev-x86_64-20250330-git-5ba7ee5.7z  
-          lib /name:mpv-2.dll /out:mpv.lib /MACHINE:X64  
-          pwd
-          ls 
-          ls "D:\a\celluloid\celluloid\mpv\mpv.lib"  
+          ${{ steps.msys2.outputs.msys2-location }}\ucrt64\bin\gendef.exe libmpv-2.dll 
+          lib /def:libmpv-2.def /out:mpv.lib /MACHINE:X64
 
       - name: Build
         run: |
