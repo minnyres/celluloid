@@ -48,7 +48,7 @@ jobs:
       - name: Install dependencies from vcpkg
         run: |
           # clear buildtrees after each package installation to reduce disk space requirements
-          ${{ steps.msys2.outputs.msys2-location }}\usr\bin\sed.exe -i "s|1.3.2|1.7.0|" "ports\libadwaita\vcpkg.json"
+          ${{ steps.msys2.outputs.msys2-location }}\usr\bin\sed.exe -i "s|1.3.2|1.7.0|" "${{ env.RUNVCPKG_VCPKG_ROOT }}/ports/libadwaita/vcpkg.json"
           $packages = `
             "glib:x64-windows-release",
             "gtk:x64-windows-release",
