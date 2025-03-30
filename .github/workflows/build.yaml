@@ -68,11 +68,16 @@ jobs:
           aria2c https://github.com/shinchiro/mpv-winbuild-cmake/releases/download/20250330/mpv-dev-x86_64-20250330-git-5ba7ee5.7z
           7z x mpv-dev-x86_64-20250330-git-5ba7ee5.7z  
           ${{ steps.msys2.outputs.msys2-location }}\ucrt64\bin\gendef.exe libmpv-2.dll 
-          lib /def:libmpv-2.def /out:mpv.lib /MACHINE:X64
-
+          lib /def:libmpv-2.def /out:libmpv.lib /MACHINE:X64
+          mkdir -p lib/pkgconfig
+          mv libmpv.lib lib
+          echo "prefix=${{ env.mpv_path }}" > lib/pkgconfig/mpv.pc
+          cat ${{ github.workspace }}/mpv.pc >> lib/pkgconfig/mpv.pc
+          cat lib/pkgconfig/mpv.pc        
+ 
       - name: Build
         run: |
-          $env:PKG_CONFIG_PATH="${{ env.RUNVCPKG_VCPKG_ROOT }}/installed/x64-windows-release/lib/pkgconfig"    
-          meson setup build --prefix=${{ env.install_path }} --buildtype release --strip -Dc_std="gnu11,c11" -Dc_args="/I ${{ env.mpv_path }}\include"  -Dc_link_args="${{ env.mpv_path }}\mpv.lib"
+          $env:PKG_CONFIG_PATH="${{ env.RUNVCPKG_VCPKG_ROOT }}/installed/x64-windows-release/lib/pkgconfig;${{ env.mpv_path }}/lib/pkgconfig"    
+          meson setup build --prefix=${{ env.install_path }} --buildtype release --strip -Dc_std="gnu11,c11"
           meson compile -C build
           meson install -C build
