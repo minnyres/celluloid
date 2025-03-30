@@ -49,6 +49,7 @@ jobs:
         run: |
           # clear buildtrees after each package installation to reduce disk space requirements
           ${{ steps.msys2.outputs.msys2-location }}\usr\bin\sed.exe -i "s|1.3.2|1.7.0|" "${{ env.RUNVCPKG_VCPKG_ROOT }}/ports/libadwaita/vcpkg.json"
+          ${{ steps.msys2.outputs.msys2-location }}\usr\bin\sed.exe -i "s/.*SHA512.*/    SHA512 8c94751422493a9e8ece45938d52e31a08f2b20d5dec5b21548c5ed387118ac216206f363e04be884ebb340777d4b1dd716bb7571d207596dbd1e5938412cbcd/" "${{ env.RUNVCPKG_VCPKG_ROOT }}/ports/libadwaita/portfile.cmake"
           $packages = `
             "glib:x64-windows-release",
             "gtk:x64-windows-release",
