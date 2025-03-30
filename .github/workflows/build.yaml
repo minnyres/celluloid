@@ -56,6 +56,6 @@ jobs:
       - name: Build
         run: |
           $env:PKG_CONFIG_PATH="${{ env.RUNVCPKG_VCPKG_ROOT }}/installed/x64-windows-release/lib/pkgconfig"
-          meson setup build --prefix=${{ env.install_path }} -buildtype release --strip
+          meson setup build --prefix=${{ env.install_path }} --buildtype release --strip
           meson compile -C build
           meson install -C build
