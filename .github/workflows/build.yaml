@@ -21,7 +21,12 @@ jobs:
 
       - name: Install build tools
         run: |
-          choco install ninja pkgconfiglite meson
+          choco install ninja pkgconfiglite
+          
+      - uses: actions/setup-python@v1
+      - uses: BSFishy/meson-build@v1.0.3
+        with:
+          action: test
 
       - name: Setup a new (or from cache) vcpkg (and does not build any package)
         uses: lukka/run-vcpkg@v11 # Always specify the specific _version_ of the
