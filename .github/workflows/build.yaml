@@ -59,7 +59,7 @@ jobs:
           mkdir -p mpv
           cd mpv
           aria2c https://github.com/shinchiro/mpv-winbuild-cmake/releases/download/20250330/mpv-dev-x86_64-20250330-git-5ba7ee5.7z
-          7z x  https://github.com/shinchiro/mpv-winbuild-cmake/releases/download/20250330/mpv-dev-x86_64-20250330-git-5ba7ee5.7z  
+          7z x mpv-dev-x86_64-20250330-git-5ba7ee5.7z  
           lib /name:mpv-2.dll /out:mpv.lib /MACHINE:X64   
           ls "D:\a\celluloid\celluloid\mpv\mpv.lib"  
 
