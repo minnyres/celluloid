@@ -8,8 +8,8 @@ jobs:
     name: Build
     runs-on: windows-latest
     env:
-      install_path: "${{ github.workspace }}\install"
-      mpv_path: "${{ github.workspace }}\mpv"
+      install_path: "${{ github.workspace }}\\install"
+      mpv_path: "${{ github.workspace }}\\mpv"
 
     steps:
       - name: Checkout repository
